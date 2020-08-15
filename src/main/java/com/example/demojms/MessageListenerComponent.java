@@ -10,9 +10,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class MessageListenerComponent implements ApplicationRunner {
 
-    @Autowired private JmsTemplate jmsTemplate;
-    @Autowired private JmsTemplate jmsTemplateTopic;
+    private JmsTemplate jmsTemplate;
+    private JmsTemplate jmsTemplateTopic;
 
+    @Autowired
+    public MessageListenerComponent(JmsTemplate jmsTemplate, JmsTemplate jmsTemplateTopic) {
+        this.jmsTemplate = jmsTemplate;
+        this.jmsTemplateTopic = jmsTemplateTopic;
+    }
 
     @JmsListener(destination = "queue.sample")
     public void onReceiverQueue(String str) {
@@ -23,7 +28,6 @@ public class MessageListenerComponent implements ApplicationRunner {
     public void onReceiverTopic(String str) {
         System.out.println( str );
     }
-
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
